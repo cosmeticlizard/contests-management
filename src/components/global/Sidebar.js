@@ -1,8 +1,14 @@
 import { FaAlignJustify, FaAngleRight, FaUserShield, FaSignOutAlt } from "react-icons/fa";
-
+import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react"
 const Sidebar = () => {
     const { data: session } = useSession()
+    let ruta = (str)=>{
+        return str+"/"+session.username;
+    }
+    let ruta2 = (str1,str2)=>{
+        return str1+"/"+session.username+"/"+str2;
+    }
     return (
         <>
             <div className="sidebar-logo">
@@ -18,38 +24,57 @@ const Sidebar = () => {
                 <ul>
                     <div className="spacer"></div>
                     <li>
-                        <a href="/createTeam">
+                        <Link href="/createTeam">
+                            <a>
                             <FaAngleRight id="sidebar-list-item" />
                             <span id="sidebar-link"> Crear equipo </span>
-                        </a>
+                            </a>
+                        </Link>
                     </li>
                     <div className="spacer"></div>
                     <li>
-                        <a href="/createCompetition">
+                        <Link href= {"users/"+session.username+"/teams"}>
+                            <a>
+                            <FaAngleRight id="sidebar-list-item" />
+                            <span id="sidebar-link"> Equipos </span>
+                            </a>
+                        </Link>
+                    </li>
+                    <div className="spacer"></div>
+                    <li>
+                        <Link href="/createCompetition">
+                            <a>
                             <FaAngleRight id="sidebar-list-item" />
                             <span id="sidebar-link"> Crear Competencia </span>
-                        </a>
+                            </a>
+                        </Link>
                     </li>
                     <div className="spacer"></div>
                     <li>
-                        <a href="/users/1">
+                        <Link href={ruta("/users")}>
+                            <a>
                             <FaAngleRight id="sidebar-list-item" />
                             <span id="sidebar-link"> Usuarios </span>
-                        </a>
+                            </a>
+                        </Link>
                     </li>
                     <div className="spacer"></div>
                     <li>
-                        <a href="/home/team/add">
+                        <Link href="/home/team/add">
+                            <a>
                             <FaAngleRight id="sidebar-list-item" />
                             <span id="sidebar-link"> Agregar a Equipo </span>
-                        </a>
+                            </a>
+                        </Link>
                     </li>
                     <div className="spacer"></div>
                     <li>
-                        <a href="/competitions/details">
-                            <FaAngleRight id="sidebar-list-item" />
+                        <Link href="/competitions/details">
+                           <a>
+                           <FaAngleRight id="sidebar-list-item" />
                             <span id="sidebar-link"> Detalles de competencias </span>
-                        </a>
+                           </a>
+                        </Link>
                     </li>
                     <div className="spacer"></div>
                     <li>

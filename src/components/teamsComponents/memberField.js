@@ -1,11 +1,13 @@
 import { Component } from "react";
 import styles from "../../styles/createTeam.module.css";
-import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default class MemberField extends Component {
+  
   constructor(props) {
     super(props);
-    this.state = { members: [""], teamName: "" };
+    //console.log("**************************************************************************memberField: "+props.username);
+    this.state = { members: [""], teamName: "", username: props.username};
   }
 
   handleDelete = (e) => {
@@ -20,7 +22,7 @@ export default class MemberField extends Component {
   };
 
   handleAdd = (e) => {
-    console.log("Agregando campo");
+
     let value = e.target.name;
     let length = this.state.members.length;
     
@@ -41,7 +43,6 @@ export default class MemberField extends Component {
   };
 
   handleSubmit = async (e) =>{
-    
     let tm = this.state;
     /*let config1 = {
       method: 'POST',
@@ -52,8 +53,8 @@ export default class MemberField extends Component {
       body: JSON.stringify({tm})
     }*/
     
-
-    let r = await fetch('http://localhost:3000/api/team/teamInsert',{
+    
+    let responseO = await fetch('http://localhost:3000/api/team/teamInsert',{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -61,6 +62,16 @@ export default class MemberField extends Component {
       },
       body: JSON.stringify({tm})
     });
+    const responseData = await responseO.json();
+
+    if(responseData.success){
+      alert("Equipo creado exitosamente");
+      this.props.router.push('/'+this.props.username);
+    }else{
+      alert("No se pudo crear el equipo");
+    }
+    //router.push('/');
+
     /*
     let config = {
       method: 'POST',
@@ -76,7 +87,7 @@ export default class MemberField extends Component {
   }
 
   handleChangedName = (e) => {
-    console.log("cambio de nombre");
+
     let aux = this.state.name;
     aux = e.target.value; 
     
@@ -89,7 +100,7 @@ export default class MemberField extends Component {
   };
 
   handleChanged = (e) => {
-    console.log("INSIDE CHANGE EVENT");
+
     let aux = this.state.members;
     let index = aux.indexOf(e.target.name);
     aux[index] = e.target.value; 
@@ -104,6 +115,7 @@ export default class MemberField extends Component {
     });
   };
 
+  
   render() {
     const membersList = this.state.members.map((e) => (
       
